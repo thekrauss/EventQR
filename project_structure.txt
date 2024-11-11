@@ -1,0 +1,95 @@
+
+Projet QR Ticket App - Backend en Node.js et Frontend en React ou Next.js
+
+Structure du Projet
+
+qr-ticket-app/
+├── backend/
+│   ├── config/
+│   │   └── db.js              # Configuration de la base de données MySQL
+│   ├── controllers/
+│   │   ├── authController.js  # Contrôleur pour l'authentification et l'inscription
+│   │   ├── qrController.js    # Contrôleur pour la génération et vérification de QR codes
+│   │   └── consoController.js # Contrôleur pour la gestion des consommations
+│   ├── middlewares/
+│   │   └── authMiddleware.js  # Middleware pour la vérification de JWT
+│   ├── models/
+│   │   ├── User.js            # Modèle utilisateur
+│   │   ├── Role.js            # Modèle rôle (si nécessaire)
+│   │   └── Consommation.js    # Modèle consommation
+│   ├── routes/
+│   │   ├── authRoutes.js      # Routes pour l'authentification
+│   │   ├── qrRoutes.js        # Routes pour les QR codes
+│   │   └── consoRoutes.js     # Routes pour les consommations
+│   ├── utils/
+│   │   └── generateQRCode.js  # Fonction utilitaire pour générer des QR codes
+│   ├── .env                   # Variables d'environnement (clé JWT, etc.)
+│   ├── app.js                 # Configuration principale de l'application Express
+│   └── server.js              # Point d'entrée du serveur
+│
+└── frontend/
+    ├── public/
+    │   └── images/            # Dossier pour les images, si nécessaire
+    ├── src/
+    │   ├── components/
+    │   │   ├── Register.js       # Formulaire d'inscription
+    │   │   ├── Login.js          # Formulaire de connexion
+    │   │   ├── QRScanner.js      # Scanner de QR code pour la vérification
+    │   │   └── ConsoTracker.js   # Suivi des consommations
+    │   ├── pages/                # Pages pour Next.js (ou utiliser React Router si React)
+    │   │   ├── index.js          # Page d'accueil
+    │   │   ├── register.js       # Page d'inscription
+    │   │   ├── dashboard.js      # Tableau de bord (après connexion)
+    │   │   └── scan.js           # Page de scan pour vérification des QR codes
+    │   ├── services/
+    │   │   ├── authService.js    # Service pour l'authentification
+    │   │   ├── qrService.js      # Service pour la gestion des QR codes
+    │   │   └── consoService.js   # Service pour les consommations
+    │   ├── App.js                # Composant racine
+    │   ├── index.js              # Point d'entrée pour React/Next.js
+    │   └── styles/               # Styles CSS pour les composants
+    │       └── global.css        # Fichier de styles globaux
+    ├── .env                      # Variables d'environnement pour le frontend
+    └── package.json              # Dépendances du frontend
+
+
+Description  Fichiers et Dossiers
+
+Backend (backend/)
+1. config/db.js : Configuration de la connexion à la base de données MySQL.
+2. controllers/ : Logique métier pour chaque fonctionnalité.
+   - authController.js : Gestion des utilisateurs (inscription, connexion).
+   - qrController.js : Génération et vérification des QR codes.
+   - consoController.js : Suivi des consommations (bières, etc.).
+3. middlewares/ : Logique intermédiaire, par exemple pour vérifier les jetons JWT avant d'accéder aux routes protégées.
+4. models/ : Modèles de données représentant les tables de la base de données.
+5. routes/ : Définit les routes API.
+   - authRoutes.js : Routes pour l'authentification (/register, /login).
+   - qrRoutes.js : Routes pour la gestion des QR codes (/generateQRCode, /verifyQRCode).
+   - consoRoutes.js : Routes pour la gestion des consommations (/updateConso).
+6. utils/generateQRCode.js : Fonction utilitaire pour générer des QR codes.
+7. app.js : Configure Express, les middlewares, et les routes.
+8. server.js : Point d’entrée du serveur Node.js.
+
+Frontend (frontend/)
+1. components/ : Contient les composants React pour chaque fonctionnalité.
+   - Register.js : Composant pour le formulaire d’inscription.
+   - Login.js : Composant pour le formulaire de connexion.
+   - QRScanner.js : Composant pour scanner les QR codes et vérifier les tickets.
+   - ConsoTracker.js : Composant pour afficher et mettre à jour les consommations.
+2. pages/ : Structure des pages dans Next.js.
+   - index.js : Page d’accueil.
+   - register.js : Page d’inscription.
+   - dashboard.js : Tableau de bord affichant les informations de l'utilisateur.
+   - scan.js : Page pour scanner les QR codes.
+3. services/ : Services pour les appels API.
+   - authService.js : Service pour les requêtes d’authentification.
+   - qrService.js : Service pour générer et vérifier les QR codes.
+   - consoService.js : Service pour le suivi des consommations.
+4. styles/ : Styles CSS pour les composants et les pages.
+
+ Flux de l’Application
+1. Inscription et Connexion : L’utilisateur s’inscrit via le composant Register.js, qui envoie une requête au backend pour créer un compte et générer un QR code.
+2. Vérification par QR Code : Le composant QRScanner.js permet de scanner le QR code. Une requête est envoyée au backend pour vérifier le QR code et valider l’entrée.
+3. Suivi des Consommations : Le composant ConsoTracker.js affiche et met à jour les consommations de l’utilisateur.
+
