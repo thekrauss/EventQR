@@ -11,11 +11,11 @@ const consoRoutes = require('./routes/consoRoutes');
 
 const app = express();
 
-// middlewares de sécurité
+// Middlewares de sécurité
 app.use(helmet());
 app.use(
   cors({
-    origin: 'https://localhost:3000',
+    origin: 'https://mon-frontend.com',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
@@ -23,28 +23,28 @@ app.use(
 app.use(compression());
 app.use(bodyParser.json({ limit: '10kb' }));
 
-// limitation du nombre de requêtes
+// Limitation du nombre de requêtes
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
   message: "Trop de requêtes, veuillez réessayer plus tard.",
 });
 app.use(limiter);
 
-// log des requêtes
-app.use((req, res, next) => {
-  logger.info(`Requête reçue : ${req.method} ${req.url}`);
-  next();
-});
-
-// routes principales
+// Routes principales
 app.use('/auth', authRoutes);
 app.use('/qr', qrRoutes);
 app.use('/conso', consoRoutes);
 
-
+// Route par défaut pour tester le serveur
 app.get('/', (req, res) => {
   res.send('API de QR Ticket sécurisée fonctionne');
+});
+
+// Gestion des erreurs
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Erreur serveur interne' });
 });
 
 module.exports = app;
