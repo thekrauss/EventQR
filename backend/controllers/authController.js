@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../config/db'); // Conn à la base de données
+const db = require('../config/db'); 
 
 
 /*------------------------------------------------------------------------------------------*/
@@ -17,7 +17,8 @@ const registerUser = async (req, res) => {
   //l'utilisateur existe déjà
   db.query('SELECT * FROM Users WHERE pseudo = ? OR adresse_mail = ?', [pseudo, adresse_mail], async (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Erreur de base de données' });
+      console.log("erreur lors de la vérification de l'utilisateur regist:", err);
+      return res.status(500).json({ error: 'erreur de base de données regist' });
     }
 
     if (results.length > 0) {

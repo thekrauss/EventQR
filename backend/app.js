@@ -23,7 +23,7 @@ app.use(
 app.use(compression());
 app.use(bodyParser.json({ limit: '10kb' }));
 
-// Limitation du nombre de requêtes
+// limitation  nombre de requêtes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
@@ -31,7 +31,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Routes principales
+// routes principales
 app.use('/auth', authRoutes);
 //app.use('/qr', qrRoutes);
 //app.use('/conso', consoRoutes);
@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
   res.send('API de QR Ticket sécurisée fonctionne');
 });
 
-// Gestion des erreurs
+// gestion des erreurs
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Erreur serveur interne' });
