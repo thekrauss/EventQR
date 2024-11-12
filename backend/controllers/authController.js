@@ -8,7 +8,13 @@ const db = require('../config/db'); // Conn à la base de données
 const registerUser = async (req, res) => {
   const { nom, pseudo, password, sexe, adresse_mail, code_pays, numero } = req.body;
 
-  // vérifi l'utilisateur
+  //complexité du mot de passe
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre, et un caractère spécial.' });
+  }
+
+  //l'utilisateur existe déjà
   db.query('SELECT * FROM Users WHERE pseudo = ? OR adresse_mail = ?', [pseudo, adresse_mail], async (err, results) => {
     if (err) {
       return res.status(500).json({ error: 'Erreur de base de données' });
@@ -18,17 +24,17 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: 'Pseudo ou adresse mail déjà utilisés' });
     }
 
-    // hache le mot de passe
+    // Hachage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // insére l'utilisateur dans la base de données
+    // insertion de l'utilisateur dans la base de données
     db.query('INSERT INTO Users (Nom, pseudo, password, sexe, adresse_mail, code_pays, numero) VALUES (?, ?, ?, ?, ?, ?, ?)', 
       [nom, pseudo, hashedPassword, sexe, adresse_mail, code_pays, numero], (err, results) => {
         if (err) {
           return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
         }
 
-        // Crée le token JWT
+        // Créer le token JWT
         const userId = results.insertId;
         const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
