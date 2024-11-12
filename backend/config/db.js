@@ -8,6 +8,12 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+console.log('DB_NAME:', process.env.DB_NAME);
+
+
 db.connect((err) => {
   if (err) throw err;
   console.log('Connecté à la base de données MySQL');

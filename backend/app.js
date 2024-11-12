@@ -6,8 +6,8 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const authRoutes = require('./routes/authRoutes');
-const qrRoutes = require('./routes/qrRoutes');
-const consoRoutes = require('./routes/consoRoutes');
+//const qrRoutes = require('./routes/qrRoutes');
+//const consoRoutes = require('./routes/consoRoutes');
 
 const app = express();
 
@@ -33,8 +33,8 @@ app.use(limiter);
 
 // Routes principales
 app.use('/auth', authRoutes);
-app.use('/qr', qrRoutes);
-app.use('/conso', consoRoutes);
+//app.use('/qr', qrRoutes);
+//app.use('/conso', consoRoutes);
 
 // Route par défaut pour tester le serveur
 app.get('/', (req, res) => {
